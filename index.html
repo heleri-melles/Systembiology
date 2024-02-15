@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title></title>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/moon.css" id="theme" />
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="plugin/customcontrols/style.css">
+
+
+
+    <script defer src="dist/fontawesome/all.min.js"></script>
+
+	<script type="text/javascript">
+		var forgetPop = true;
+		function onPopState(event) {
+			if(forgetPop){
+				forgetPop = false;
+			} else {
+				parent.postMessage(event.target.location.href, "app://obsidian.md");
+			}
+        }
+		window.onpopstate = onPopState;
+		window.onmessage = event => {
+			if(event.data == "reload"){
+				window.document.location.reload();
+			}
+			forgetPop = true;
+		}
+
+		function fitElements(){
+			const itemsToFit = document.getElementsByClassName('fitText');
+			for (const item in itemsToFit) {
+				if (Object.hasOwnProperty.call(itemsToFit, item)) {
+					var element = itemsToFit[item];
+					fitElement(element,1, 1000);
+					element.classList.remove('fitText');
+				}
+			}
+		}
+
+		function fitElement(element, start, end){
+
+			let size = (end + start) / 2;
+			element.style.fontSize = `${size}px`;
+
+			if(Math.abs(start - end) < 1){
+				while(element.scrollHeight > element.offsetHeight){
+					size--;
+					element.style.fontSize = `${size}px`;
+				}
+				return;
+			}
+
+			if(element.scrollHeight > element.offsetHeight){
+				fitElement(element, start, size);
+			} else {
+				fitElement(element, size, end);
+			}		
+		}
+
+
+		document.onreadystatechange = () => {
+			fitElements();
+			if (document.readyState === 'complete') {
+				if (window.location.href.indexOf("?export") != -1){
+					parent.postMessage(event.target.location.href, "app://obsidian.md");
+				}
+				if (window.location.href.indexOf("print-pdf") != -1){
+					let stateCheck = setInterval(() => {
+						clearInterval(stateCheck);
+						window.print();
+					}, 250);
+				}
+			}
+	};
+
+
+        </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides"><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; padding: 250px 0  250px 800px; box-sizing: border-box; position: absolute; left: 20%; top: 20%; height: 80%; width: 80%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+# Chapter 1
+## Concepts from physical chemistry
+
+ ### Heleri Melles
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 0%; top: 5%; height: 95%; width: 95%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+</div>
+
+<div class="has-light-background" style="background-color: #EEB73F; padding: 50px; box-sizing: border-box; position: absolute; left: 0%; top: 10%; height: 80%; width: 90%; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly" align="justify">
+
+## Topics for Today​
+* Macroscopic thermodynamics ​
+
+* Isolated systems & Boltzmann entropy ​
+
+* Closed isothermal systems ​
+
+* Isothermal isobaric systems ​
+
+* Thermodynamic driving forces​
+
+* Applications ​
+
+</div>
+</div>
+</grid></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 0%; top: 5%; height: 95%; width: 95%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+</div>
+
+<div class="has-light-background" style="background-color: #EEB73F; padding: 50px; box-sizing: border-box; position: absolute; left: 47%; top: 25%; height: 60%; width: 47%; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly" align="justify">
+
+
+* **Biochemical system** examples:​
+	* Cellular metabolic pathways​
+	* Genetic regulatory systems​
+    
+* These are networks of living organisms which are related to each other by chemical processes.
+</div>
+
+<div class="has-light-background" style="background-color: #EEB73F; padding: 50px; box-sizing: border-box; position: absolute; left: 0%; top: 5%; height: 85%; width: 47%; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly" align="justify">
+
+# Overview 
+* Since all biochemical systems obey principles of physical chemistry, we need to understand some concepts of chemical thermodynamics:​
+	* Temperature​
+	* Entropy
+	* Chemical potential​
+	* Free energy​
+	* Boltzmann statistics​
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 0%; top: 15%; height: 25%; width: 95%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+## Preliminary Mathematics
+</div>
+<div class="has-light-background" style="background-color: #EEB73F; padding: 50px 50px  250px 50px; box-sizing: border-box; position: absolute; left: 0%; top: 35%; height: 70%; width: 95%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+
+`$ \qquad \qquad G = H - TS $` 
+
+* `$\frac{dG}{dT}$` derivative -  infintiesimal change with respect to on of the variables
+* `$\nabla$` gradient (slope) - rate at which a physical quantity changes
+	* `$ \nabla G = \frac{dG}{dH}$`
+* `$\Delta$` -finite change of a quantity
+* <u>`$\partial$` - **_partial derivative_**</u>
+	* `$\frac{\partial G}{\partial H} = 1 \qquad \frac{\partial G}{\partial T} = -S \frac{\partial G}{\partial S} = -T$`
+
+* <u>**_Total (exact) differential_**</u>:
+$
+d G = \frac{\partial G}{\partial H}dH - \frac{\partial G}{\partial TS}d(TS) = dH - (TdS + SdT) = dH - Tds -SdT
+$
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 2.5%; top: 2.5%; height: 95%; width: 95%; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly" align="justify">
+
+<div class="block">
+
+<!-- .element: style="font-size: 45px" -->
+
+$
+G = H - TS
+$
+
+$
+{d(TS)}= TdS + SdT 
+$
+
+$
+{d(-TS)}= -TdS - SdT
+$
+
+$
+\frac{\partial G}{\partial H} = 1
+$
+
+$
+\frac{\partial G}{\partial T} = -S
+$
+
+$
+\frac{\partial G}{\partial S} = -T
+$
+
+$
+\ln(ab)= \ln(a) + \ln(b)
+$
+
+$
+\ln(\frac{a}{b})= \ln(a) - \ln(b)
+$
+
+$
+\ln(a^{b})= b \ln(a)
+$
+</div>
+
+
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; padding: 0px 0  0px 75px; box-sizing: border-box; position: absolute; left: 15%; top: 15%; height: 85%; width: 85%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+# 1.1 Macroscopic thermodynamics
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: undefined%; top: 0%; height: 26%; width: 95%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+## Laws of thermodynamics
+</div>
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 2.5%; top: 25%; height: 75%; width: 95%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+</div>
+
+<div class="has-light-background" style="background-color: #EEB73F; padding: 50px; box-sizing: border-box; position: absolute; left: 3%; top: 25%; height: 75%; width: 47%; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly" align="justify">
+
+0. <!-- .element: style="font-size: 45px" -->
+    If two systems have same temperature as a third system, then they have the same <u>_**temperature**_</u> as one another.​
+	<!-- .element: style="font-size: 45px" -->
+
+1. <!-- .element: style="font-size: 45px" -->
+   The <u>_**total energy**_</u> of an isolated system is conserved (energy remains constant).​
+   <!-- .element: style="font-size: 45px" -->
+
+2. <!-- .element: style="font-size: 45px" -->
+The <u>_**entropy**_</u> of an isolated system does not decrease.​
+<!-- .element: style="font-size: 45px" -->
+3. <!-- .element: style="font-size: 45px" -->
+   The <u>_**minimal entropy**_</u> of a system is achieved at the temperature of <u>**_absolute zero_**</u>.
+   <!-- .element: style="font-size: 45px" -->
+
+</div>
+
+<div class="has-light-background" style="background-color: #EEB73F; padding: 50px; box-sizing: border-box; position: absolute; left: 50%; top: 25%; height: 75%; width: 47%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start" align="top">
+
+-  <u>_**Entropy**_</u> - molecular disorder or randomness of a system. ​
+    
+	- Provides an insight into the direction of spontaneous change. ​
+    
+- <u>**_Absolute zero_**</u> - lowest limit of thermodynamic temperature scale.​
+    
+	- Zero kelvin = -273.15°C​
+<!-- .element: style="font-size: 45px" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 2.5%; top: 2.5%; height: 95%; width: 95%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 8%; top: 0%; height: 30%; width: 85%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+To illustrate the potential disconnect between knowledge and understanding in the study of thermodynamics, let's  look at basic equation of macroscopic thermodynamics:​
+<!-- .element: style="font-size: 45px" -->
+</div>
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 8%; top: 30%; height: 10%; width: 85%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+
+<split left="2" right="1" gap="2">
+
+`$ \boxed{dE  = TdS -PdV + \mu dN} $`
+<!-- .element: style="font-size: 50px" -->
+
+`$ (1.1) $`
+<!-- .element: style="font-size: 50px" -->
+</split>
+
+</div>
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 8%; top: 40%; height: 55%; width: 85%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+
+<div class="block">
+
+<!-- .element: style="font-size: 50px" -->
+
+`$dE \ -$` infinitesimal change in **_internal energy_**
+
+`$dS \ -$` infinitesimal change in **_entropy_**
+
+`$dV \ -$` infinitesimal change in **_volume_**
+
+`$dN \ -$` infinitesimal change in the **_number of particles_**
+
+`$ \ T \ -$`  **_temperature_**, `$ \ P \ -$` ___pressure___ , `$ \ \mu \ -$` ___chemical potential___ 
+
+</div>
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 2.5%; top: 2.5%; height: 95%; width: 95%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 8%; top: 8%; height: 85%; width: 85%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<div class="block">
+
+<!-- .element: style="font-size: 45px" -->
+
+ Armed with equation `$(1.1)$` and 2nd law of thermodynamics (entropy) one may develop all of the relevant formulas of macroscopic thermodynamics.
+
+
+For example, if the volume and the number of particles in a system is held constant:
+
+
+1. Let's express `$dS$` from `$(1.1): \qquad \boxed{dS = \frac1T[dE - PdV + \mu dN]}$` 
+
+2. Entropy `$S$` is a function dependent on variables energy, volume, nr. of particles, pressure, i.e `$S(E, V, N) \ $` and `$ \ N,V=const.  $`
+   This means that differential `$ \boxed{dS= \frac {\partial S}  {\partial E} dE }$`. `$ \qquad \lbrack Using \ total \ differential \rbrack  $`
+
+3. Now let's combine `$ \ dS = \frac1T[dE - PdV + \mu dN]$` and `$dS= \frac {\partial S}  {\partial E} dE $`, knowing that `$ N,V=const. :$` 
+
+`$dS = \frac1T dE = \frac {\partial S}  {\partial E} dE \implies \frac{1}{T}=  \frac{\partial S}{ \partial E} \implies \boxed{\left(\frac{\partial S}{\partial E}\right)_{N,V}= \frac{1}{T} } \qquad (1.2)$`
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+​
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 2.5%; top: 2.5%; height: 95%; width: 95%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 8%; top: 8%; height: 85%; width: 85%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<div class="block">
+
+<!-- .element: style="font-size: 45px" -->
+**NB!** `$(*)_{N,V}$` means we have computed `$(1.2) $` holding `$N,V$` constant.
+
+#### Gibbs free energy `$ \qquad \boxed{G = E - TS + PV}$`
+
+Combining Gibbs free energy definition with eq. `$(1.1)$` we obtain
+1. If we take total differential of `$G$`, i.e
+$
+	dG = dE - TdS - SdT + PdV +VdP
+$
+2. Now, substitute `$dE$` using `$(1.1)$`
+$
+	dG= (TdS -PdV + \mu dN)(-Tds-SdT+PdV+VdP)
+$
+3. We get
+
+	$
+		dG = \mu dN -SdT +VdP
+	$
+
+	`$(\frac{\partial G}{\partial N})_{T,P}=\mu$`
+
+Yet mathematical manipulations do not tell us why it's useful to introduce `$G$` as thermodynamic variable.
+</div>
+
+
+
+</div>
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; padding: 0px 0  0px 75px; box-sizing: border-box; position: absolute; left: 15%; top: 15%; height: 85%; width: 85%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+# 1.2 Isolated systems and the Boltzmann definition of entropy
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 2.5%; top: 2.5%; height: 95%; width: 95%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 8%; top: 8%; height: 85%; width: 85%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<div class="block">
+
+<!-- .element: style="font-size: 45px" -->
+<u>_**Isolated system**_</u> - system that does not exchange material or energy with its environment.
+
+* So in isolated systems variable `$N$` (nr. of particles), `$V$` (volume) and `$E$` (energy) are held constant (fixed). 
+
+<u>_**Microstate**_</u> - microscopic configuration of the system
+
+**_Boltzmann's formula for the entropy_** `$S$` of isolated system is
+$
+	\qquad \qquad \boxed{S = k_{B}\ln\Omega(N,V,E),} \qquad \qquad (1.4)
+$
+
+where `$k_B-$` Boltzmann const. and `$\Omega(N,V,E)-$` the total of microstates that are available for the system at given values of `$(N,V,E)$`.
+
+It is postulated that the probability of a thermodynamic state of a closed isolated system is proportional to `$\Omega$`. As a consequence, closed isolated systems move naturally from thermodynamic states of lower `$\Omega$` to higher `$\Omega$`. In fact for systems composed of many particles, the likelihood of `$\Omega$` ever decreasing with time is vanishingly small and the II law of thermodynamics is immediately apparent.
+</div>
+
+
+
+</div>
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 2.5%; top: 2.5%; height: 95%; width: 95%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 8%; top: 8%; height: 85%; width: 85%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<div class="block">
+
+<!-- .element: style="font-size: 45px" -->
+Now if we combine equations `$(1.1)$` and `$1.4$` we can develop statistical interpretation of the thermodynamic quantity <u>_**temperature**_</u>.
+
+1. Total differential of `$S$`
+$
+	dS = k_{B}\left[\frac{\partial \ln \Omega (N,V,E)}{\partial N}dN + \frac{\partial \ln \Omega (N,V,E)}{\partial V}dV + \frac{\partial \ln \Omega (N,V,E)}{\partial E}dE\right]\
+$
+$
+	dS = \frac{\partial S}{\partial N}dN + \frac{\partial S}{\partial V}dV + \frac{\partial S}{\partial E}dE
+$
+2. Substituting `$dE$` with `$(1.1)$`
+$
+	dS = \frac{\partial S}{\partial N}dN + \frac{\partial S}{\partial V}dV + \frac{\partial S}{\partial E}(TdS -PdV + \mu dN)
+$
+3. Since `$N,V,E$` are constants
+$
+	dN=0; \ dV=0 ; \ dE=0
+$
+and
+$
+dS= \frac{\partial S}{\partial E}TdS
+\implies \frac{\partial S}{\partial E} =\frac{1}{T} 
+\implies \frac{\partial S}{\partial E} = \boxed{k_{B}\frac{\partial \ln \Omega}{\partial E} = \frac{1}{T}} \qquad (1.5)
+$
+
+> <!-- .element: style="background-color: lightpink" class="has-light-background" --> 
+> `$(1.5)$` states that temperature is a measure of the relationship between number of microstates and internal energy of matter.
+</div>
+
+
+
+</div>
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; padding: 0px 0  0px 75px; box-sizing: border-box; position: absolute; left: 15%; top: 15%; height: 85%; width: 85%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+# 1.3 Closed isothermal systems
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 0%; top: 0%; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+## 1.3.1 Helmholtz free energy 
+<div class="block">
+
+<!-- .element: style="font-size: 45px" -->
+* Biological systems exchange energy and material with the environment, thus they are not isolated systems.
+* It's important to understand what are the thermodynamic driving forces in such systems.
+* Since biochemical processes occur in an aqueous environment, we wish to treat the environment in a strict way without worrying about the solvent molecules.
+* We are going to take a look at <u>**_closed systems_**</u> (closed to mass transport but not to energy transform) at <u>**_constant temperature_**</u>
+	* <u>**_isothermal_**</u> - constant temperature
+	* Such system is called NVT system, because N, V, T are held constant
+	* We will see that just as isolated system (NVE) evolves to increase it's entropy, an NVT system evolves to decrease its Helmholtz free energy.
+
+</div>
+
+
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: white; position: absolute; left: 2.5%; top: 2.5%; height: 95%; width: 95%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+### Boltzmann probability law
+<img src="/localFileSlash/Users/heler/Downloads/Boltzmann_Proba.jpg" alt="Image" style="object-fit: scale-down">
+
+[Link](https://www.cambridge.org/core/services/aop-cambridge-core/content/view/6FC6F67A96ED06235A469E59BEB4D0B0/9780511803345c1_p7-23_CBO.pdf/concepts_from_physical_chemistry.pdf)
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 2.5%; top: 2.5%; height: 95%; width: 95%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 8%; top: 8%; height: 85%; width: 85%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<div class="block">
+
+<!-- .element: style="font-size: 45px" -->
+Since we no more have fixed total internal energy `$E$` of the system according to the Boltzmann probability law the probability of a microstate that has internal energy `$E$` is proportional to `$e^{\frac{-E}{k_{B}T}}$`. Thus the probability of a state can be calculated
+
+$
+\boxed{P(E)= \frac{e^{-\beta E}}{Q},} \qquad \qquad \qquad \qquad \qquad (1.6) 
+$ <!-- .element: style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right" -->
+
+where
+
+$
+\boxed{Q= \sum\limits_{i} e^{-\beta E_i},} \qquad \qquad \qquad \qquad \qquad (1.7) 
+$ <!-- .element: style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right" -->
+
+here the factor `$\beta=\frac{1}{k_{B}T}$` and `$i$` denotes all possible states.
+
+</div>
+
+
+
+</div>
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 0%; top: 0%; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: undefined%; top: 5%; height: 95%; width: 95%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<div class="block">
+
+<!-- .element: style="font-size: 45px" -->
+Let's determine an expression for an expression for the **_average internal energy_** `$U$`.
+
+Using the NVT probability distribution function `$(1.6)$`, we can calculate the expected value of a property of the system as `$\qquad \boxed{ \langle f \rangle = \frac{\sum\limits_{i} f_{i} e^{-\beta E_{i}}} {Q} }  \qquad (1.8)$` 
+, where `$\langle f \rangle$` is the expected value of some property `$f$` anf `$f_i$` is the value of `$f$` corresponding to the `$i$`th state.
+
+So the average internal energy of a closed isothermal system is defined as `$E:=f :$`
+
+$ 
+\boxed{ U = \frac{\sum\limits_{i} E_{i} e^{-\beta E_i}}{\sum\limits_{i} e^{-\beta E_{i}}} = - \frac{\partial}{\partial \beta} \ln\left[\sum\limits_{i} e^{-\beta E_{i}}\right]=\frac{-\partial}{\partial \beta} \ln Q } \qquad \qquad (1.9)
+$ <!-- .element: style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right" -->
+</div>
+
+
+
+</div>
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 2.5%; top: 2.5%; height: 95%; width: 95%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 8%; top: 8%; height: 85%; width: 85%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<div class="block">
+
+<!-- .element: style="font-size: 45px" -->
+* The NVT system naturally moves to maximize `$Q$`, the probability- weighted sum of states.
+
+Now let's see why Helmholtz free energy is a useful quantity in determining the direction of spontaneous change in thermodynamic systems.
+
+<u> **_Helmholtz free energy_**</u> `$A$` is defined as `$\boxed{A=U-TS}$` and incremental changes in `$A$` can be related to changes in average internal energy, temperature and entropy by
+
+$
+\boxed{dA=-SdT-PdV+ \mu dN} \qquad \qquad \qquad (1.10) 
+$ <!-- .element: style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right" -->
+
+Thus, we can express `$U=A+TS$` as
+
+$
+\boxed{ 
+U = A-T (\frac{\partial A}{\partial T})_{N,V}= -T^{2} \left(\frac{\partial}{\partial T} \left(\frac{A}{T}\right)\right) _{N,V} = \left[\frac{\partial {\left(\frac{A}{T}\right)}}{\partial \left(\frac{1}{T}\right)}\right] _{N, V}} \qquad (1.11)
+$ <!-- .element: style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right" -->
+
+By recallin that `$\beta = \frac{1}{k_{b} T}$` we can equate `$(1.9)$` and `$(1.11)$` and  we get Helmholtz free energy expressed directly through `$Q$`
+
+$
+\boxed{A = -k_{B}T\ln Q} \qquad \qquad \qquad \qquad \qquad (1.12)
+$ <!-- .element: style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right" -->
+
+</div>
+
+
+
+</div>
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 2.5%; top: 2.5%; height: 95%; width: 95%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 8%; top: 8%; height: 85%; width: 85%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<div class="block">
+
+<!-- .element: style="font-size: 45px" -->
+> <!-- .element: style="background-color: lightpink; display: flex; flex-direction: column; align-items: center; justify-content: center" class="has-light-background" align="center" --> 
+> NVT systems that minimize Helmholtz free energy maximize `$Q$`. Therefore, `$A$` is useful thermodynamic potential for NVT systems; NVT systems spontaneously move down the gradients in Helmholtz free energy.
+
+</div>
+
+
+
+</div>
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: undefined%; top: undefined%; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+
+## `$\qquad \qquad \qquad \qquad    $` 1.3.2 Entropy in NVT system 
+
+<div class="block">
+
+<!-- .element: style="font-size: 45px" -->
+* Probability of a given state is  `$ .\boxed{ P_{i}= \frac{e^{-\beta E_{i}}}{Q} }\qquad (1.13)$` 
+* Take the expected value of the logarithm of `$(1.13)$` `$ \boxed{\langle \ln P_i\rangle = -\ln Q - \beta \langle E_i \rangle = -\ln Q - \beta U = \beta(A-U)}  \qquad (1.14)$`
+* Since `$A-U=-TS \implies S = -k_{B}\langle \ln P_{i} \rangle $`
+* Expected value of `$\ln P_{i} $` can be evaluated with `$(1.8)$`, and 
+
+$
+\boxed{
+S = - k_{B} \sum\limits _{i} P_i \ln P_i} \qquad \qquad \qquad \qquad \qquad \qquad \qquad(1.15) \qquad
+$ <!-- .element: style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right" -->
+
+
+* Formula `$(1.15)$` is called Gibbs formula
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; padding: 0px 0  0px 75px; box-sizing: border-box; position: absolute; left: 15%; top: 15%; height: 85%; width: 85%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+# 1.4 Isothermal isobaric systems
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: undefined%; top: undefined%; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+
+## `$\qquad \qquad \qquad \qquad    $` 1.3.2 Entropy in NVT system 
+
+<div class="block">
+
+<!-- .element: style="font-size: 43px" -->
+* <u> **_Isothermal_** </u> - fixed temperature
+* <u> **_Isobaric_** </u> - fixed preassure
+
+* The probability of a state in NPT system is expressed as a function of  <u> **_enthalapy_** </u>  
+`$ \boxed{H = E + PV}$` <!-- .element: style="display: flex; flex-direction: column; align-items: center; justify-content: center" align="center" -->
+* From `$(1.1)$` `$dH = TdS -VdS -VdP + \mu dN$` and
+`$ \boxed{ \left(\frac{\partial S}{\partial H}\right)_{N,V}= \frac{1}{T}} \qquad \qquad \qquad \qquad \qquad \qquad  (1.17)$` <!-- .element: style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right" -->
+
+* And the **_probability law_** for NPT system is
+`$ \boxed{ P= { \frac { e^ {-\beta H}} {Z}} \ and \ Z= \sum\limits _i e^{-\beta H_i}  } \qquad \qquad \qquad \qquad  (1.18)$` <!-- .element: style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right" -->
+
+* Finaly average **_enthalapy_** of an NPT system is computed
+
+$ 
+\boxed{ H = \frac{\sum\limits_{i} H_{i} e^{-\beta H_i}}{\sum\limits_{i} e^{-\beta H_{i}}} = - \frac{\partial}{\partial \beta} \ln\left[\sum\limits_{i} e^{-\beta H_{i}}\right]=- \frac{\partial}{\partial \beta} \ln Z } \quad (1.19)
+$ <!-- .element: style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right" -->
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 0%; top: 0%; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: undefined%; top: 5%; height: 95%; width: 95%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<div class="block">
+
+<!-- .element: style="font-size: 45px" -->
+The Gibbs free energy is `$ \boxed{ G=E-TS+PV  } $` or `$ \boxed{ G=H-TS  } $`
+
+Following the logic analogous to that in Section `$1.1.3$`, we have
+
+$
+\boxed{ 
+H = G-T \left(\frac{\partial G}{\partial T}\right)_{N,V}= -T^{2} \left(\frac{\partial}{\partial T} \left(\frac{G}{T}\right)\right) _{N,V} = \left[\frac{\partial {\left(\frac{G}{T}\right)}}{\partial \left(\frac{1}{T}\right)}\right] _{N, V}} \qquad (1.20)
+$ <!-- .element: style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right" -->
+
+Equating `$(1.19)$` and `$(1.20)$`, we obtain
+
+$
+\boxed{G=-k_{B}T \ln Z} \qquad \qquad \qquad \qquad (1.20)
+$<!-- .element: style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right" -->
+</div>
+
+
+> <!-- .element: style="font-size: 45px; background-color: lightpink; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly" class="has-light-background" align="justify" --> 
+> NPT systems that minimize Gibbs free energy maximize `$Z$`. Therefore, `$G$` is useful thermodynamic potential for NPT systems; NPT systems spontaneously move down the gradients in Gibbs free energy.
+
+</div>
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 0%; top: 0%; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly" align="justify">
+
+## 1.5 Thermodynamic driving forces in different systems
+
+<div class="block">
+
+<!-- .element: style="font-size: 45px" -->
+| System | Thermodynamic driving force |
+|-------|--------------------------|
+|NVE      |Maximize entropy S |
+|NVT      |Maximize Helmholtz free energy `$E-TS$` |
+|NPT      |Minimize GIbbs free energy `$E+PV-TS$`|
+|
+
+* NVE - maximize entropy by maximizing number of microstates associated with its macrostate
+* NVT and NPT require introduction of free energy with Helmholtz and Gibbs respectevly.
+
+</div>
+
+
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; padding: 0px 0  0px 75px; box-sizing: border-box; position: absolute; left: 15%; top: 15%; height: 85%; width: 85%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+# 1.6  Applications and conventions in chemical thermodynamics
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 0%; top: 0%; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+</div>
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: undefined%; top: 0%; height: 25%; width: 95%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+## 1.6.1 Systems of non-interacting molecules 
+</div>
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 2.5%; top: 25%; height: 75%; width: 95%; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly" align="justify">
+
+
+<div class="block">
+
+<!-- .element: style="font-size: 45px" -->
+To apply preceding concepts of chemical thermodynamics to chemical reaction systems, we develop expressions for the change in Helmholtz and Gibbs free energies in chemical reactions based on the definitions of `$A$` and `$G$` in terms of `$Q$` and `$Z$`.
+* `$Q$` and `$Z$` are called <u>**_partition functions_**</u>
+* Consider an open system consisting of a single protein molecule in solution. This system could be a biological molecule in a bath of water held at a constant temperature. If this molecule adopts a number of conformational states, its NVT and NPT partition functions
+
+$
+ \boxed{Q_1= \sum\limits _{i} e^{-\beta E_i }  \quad Z_1=\sum\limits _{i} e^{-\beta H_i}}
+$<!-- .element: style="display: flex; flex-direction: column; align-items: center; justify-content: center" align="center" -->
+
+`$\quad$` where `$E_i$` and `$H_i$` are energy and enthalpy associated wit `$i$`th state.
+
+* "1" indicates the number of molecules. We have single-molecule system
+
+</div>
+
+
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 0%; top: 0%; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: undefined%; top: 5%; height: 95%; width: 95%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<div class="block">
+
+<!-- .element: style="font-size: 45px" -->
+
+In case of two molecule system (identical and independent macromolecules)
+
+$
+ \boxed{Q_{2}= \frac{1}{2} \sum\limits _{i} \sum\limits _{j} e^{-\beta {(E_i +E_j)}} = \frac{1}{2} Q_1^{2} }  \qquad \qquad \qquad (1.24)
+$<!-- .element: style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right" -->
+
+* We have `$\frac{1}{2}$`  so that we do not double count identical states.
+* Generalizing `$(1.24)$`
+
+$
+ \boxed{Q_{N}= \frac{1}{N!}  Q_1^{N} }   \qquad \qquad \qquad \qquad \qquad (1.24)
+$<!-- .element: style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right" -->
+
+* `$N!=1*2*3*...*(N-1)*N$`
+
+Equation `$(1.25)$` assumes that the system is <u>**_diluted_**</u>.
+* <u>**_Diluted_**</u> - molecules do not interact with one another in such a way that the energy associated with a given conformation of one molecule is not affected by the conformation of any other molecule in the system.
+</div>
+
+
+
+</div>
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 0%; top: 0%; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: undefined%; top: 5%; height: 95%; width: 95%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<div class="block">
+
+<!-- .element: style="font-size: 45px" -->
+
+Here we can express Helmholtz free energy
+
+$
+ A= -k_{B} T \ln Q_{N} = -k_{B} T \ln \left(\frac{Q_{1}^{N}}{N!}\right)  = -k_{B}T (\ln Q_{1}^{N}) - \ln N! = 
+$<!-- .element: style="display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left" -->
+
+$
+ \quad =  k_{B}T (\ln N! - \ln Q_{1}^{N}) = k_{B}T (\ln N! -N \ln Q_{1}) \approx
+$<!-- .element: style="display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left" -->
+
+Stirling's approximation `$ \ln N! \approx N \ln N -N$`
+
+$
+ \quad \approx  k_{B}T(N\ln N - N -N \ln Q_{1})
+$<!-- .element: style="display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left" -->
+
+We obtained 
+
+$
+ \boxed{A \approx  k_{B}T(N\ln N - N -N \ln Q_{1})} \qquad \qquad \qquad (1.26)
+$<!-- .element: style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right" -->
+
+</div>
+
+
+
+</div>
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 0%; top: 0%; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: undefined%; top: 5%; height: 95%; width: 95%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<div class="block">
+
+<!-- .element: style="font-size: 45px" -->
+
+$
+ \boxed{A \approx  k_{B}T(N\ln N - N -N \ln Q_{1})} \qquad \qquad \qquad (1.26)
+$<!-- .element: style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right" -->
+
+Using formula `$\mu = \left(\frac{\partial A}{\partial N}\right)_{V,T}$` we take partial derivative of `$(1.26)$` with respect to `$N$` and remember that `$T$` is a constant
+
+$
+\left(\frac{\partial A}{\partial N}\right)_{V,T} = k _{B} T \left(\frac{\partial \ln N -\partial N - \partial \ln Q_1}{\partial N}\right) _{N,V} = k _{B}T\left(\ln N + \frac{1}{N} N -1 - \ln Q _{1}\right) = 
+$<!-- .element: style="display: flex; flex-direction: column; align-items: center; justify-content: space-evenly" align="justify" -->
+
+$
+= k _{B} T (\ln N -\ln Q _{1}) \implies \boxed{\mu = k _{B} T (\ln N -\ln Q _{1})} \quad \qquad \qquad (1.27)
+$<!-- .element: style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right" -->
+
+Equation `$(1.27)$` can be written as
+
+$
+\boxed{\mu = k _{B} T \ln \frac{N}{V} - k _{B} T \ln \frac{Q _{1}}{V}\quad and \quad \mu= \mu ^ {o} k _{B}T \ln c } \quad \qquad \qquad (1.28)
+$<!-- .element: style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right" -->
+
+, where `$\mu ^{o}=-k _{B} T\ln \frac{Q _{1}}{V}$` is a constant that depends on the molecular species and `$c = \frac{N}{V}$` is concentration of molecules of that species.
+</div>
+
+
+
+</div>
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; padding: 0px 0  0px 75px; box-sizing: border-box; position: absolute; left: 15%; top: 15%; height: 85%; width: 85%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+# 1.7 Application of thermodynamics in biology
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 0%; top: 0%; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+</div>
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: undefined%; top: 0%; height: 20%; width: 95%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+## 1.7.1 Enzyme reaction mechanisms 
+</div>
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 2.5%; top: 15%; height: 85%; width: 95%; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly" align="justify">
+
+
+<div class="block">
+
+<!-- .element: style="font-size: 45px" -->
+<u>**_Catalysis_**</u> - increase in rate of a chemical reaction due to an added substance know as <u>**_catalyst_**</u>
+
+<u>**_Enzymes_**</u> - proteins that act as biological catalysts by accelerating chemical reactions.
+
+<u>**_Enzyme kinetics_**</u> - study of the rates of enzyme-catalysed chemical reactions
+
+<u>**_Substrates_**</u>  - molecule upon which enzymes may act, and enzymes convert the substrates into different molecules know as <u>**_products_**</u>.
+
+Making use of the fact that enzymes are not able to alter the overall thermodynamics of chemical reaction, we can develop sets of mathematical constraints that apply to the kinetic constants of enzyme reaction mechanism.
+
+</div>
+
+
+
+</div>
+</div></script></section><section  data-markdown><script type="text/template"><!-- .slide: class="drop" -->
+<div class="" style="position: absolute; left: 0px; top: 0px; height: 1200px; width: 1920px; min-height: 1200px; display: flex; flex-direction: column; align-items: center; justify-content: center" absolute="true">
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: 0%; top: 0%; height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center" >
+
+
+<div class="has-light-background" style="background-color: #EEB73F; position: absolute; left: undefined%; top: 5%; height: 95%; width: 98%; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-evenly" align="left">
+
+<div class="block">
+
+<!-- .element: style="font-size: 35px" -->
+
+Consider the overall chemical reaction `$S_{1}+S_{2} \rightleftarrows P$` for which we denote the equilibrium constant `$K_{eq}$`. A possible enzyme-mediated reaction scheme for this reaction:[Link](https://www.cambridge.org/core/services/aop-cambridge-core/content/view/6FC6F67A96ED06235A469E59BEB4D0B0/9780511803345c1_p7-23_CBO.pdf/concepts_from_physical_chemistry.pdf)
+
+Here substrates `$S_1$` and `$S_2$` bind enzyme `$E$` in arbitrary (random) order and the complex `$ES_{1}S_{2}$` converts to free enzyme plus product `$P$`.
+
+The kinetic constants `$k_i$` apply to mass-action kinetics for the state transition steps illustrated in the diagram. For example, the rate at which `$E$` binds to {S_1} and generates the complex `$ES_1$` is `$k _{+1} [E][S_{1}]$`, where `$[X]$` stands for the concentration of `$X$`. The process proceed in the reverse direction at the rate `$k_{-1}[ES_{1}]$`.
+So, we get that in chemical equilibrium:
+
+$
+\boxed{
+\frac{[P]}{[S_{1}][S_{2}]} = K_{eq} = \frac{k_{+1}k_{+2}k_{+5}}{k_{-1}k_{-2}k_{-5}}
+} \quad \qquad \qquad \qquad (1.39)
+$<!-- .element: style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right" -->
+
+Similarly
+
+$
+\boxed{
+K_{eq} = \frac{k_{+3}k_{+4}k_{+5}}{k_{-3}k_{-4}k_{-5}}
+} \qquad \qquad \qquad \qquad \qquad (1.40)
+$<!-- .element: style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right" -->
+
+Doing some algebra we obtain
+
+$
+\boxed{
+\frac{k_{+1}k_{+2}k_{-3}k_{-4}}{k_{-1}k_{-2}k_{+3}k_{+4}} = 1
+} \qquad \qquad \qquad \qquad \qquad (1.41)
+$<!-- .element: style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-evenly" align="right" -->
+
+which is a thermodynamic consequence of reaction loop illustrated in the figure.
+
+</div>
+
+
+
+</div>
+
+</div>
+</div></script></section></div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/math/math.js"></script>
+	<script src="plugin/mermaid/mermaid.js"></script>
+	<script src="plugin/chart/chart.min.js"></script>
+	<script src="plugin/chart/plugin.js"></script>
+	<script src="plugin/customcontrols/plugin.js"></script>
+
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+	  function isLight(color) {
+		let hex = color.replace('#', '');
+
+		// convert #fff => #ffffff
+		if(hex.length == 3){
+			hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+		}
+
+		const c_r = parseInt(hex.substr(0, 2), 16);
+		const c_g = parseInt(hex.substr(2, 2), 16);
+		const c_b = parseInt(hex.substr(4, 2), 16);
+		const brightness = ((c_r * 299) + (c_g * 587) + (c_b * 114)) / 1000;
+		return brightness > 155;
+	}
+
+	var bgColor = getComputedStyle(document.documentElement).getPropertyValue('--r-background-color').trim();
+	var isLight = isLight(bgColor);
+
+	if(isLight){
+		document.body.classList.add('has-light-background');
+	} else {
+		document.body.classList.add('has-dark-background');
+	}
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath.MathJax3,
+		  RevealMermaid,
+		  RevealChart,
+		  RevealCustomControls,
+        ],
+
+
+    	allottedTime: 120 * 1000,
+
+		mathjax3: {
+			mathjax: 'plugin/math/mathjax/tex-mml-chtml.js',
+		},
+		markdown: {
+		  gfm: true,
+		  mangle: true,
+		  pedantic: false,
+		  smartLists: false,
+		  smartypants: false,
+		},
+
+		mermaid: {
+			theme: isLight ? 'default' : 'dark',
+		},
+
+		customcontrols: {
+			controls: [
+			]
+		},
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"width":1920,"height":1200,"margin":0,"controls":true,"progress":true,"slideNumber":false,"transition":"slide","transitionSpeed":"default"}, queryOptions);
+    </script>
+
+    <script>
+      Reveal.initialize(options);
+    </script>
+  </body>
+
+  <!-- created with Advanced Slides -->
+</html>
